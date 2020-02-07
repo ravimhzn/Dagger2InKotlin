@@ -1,14 +1,21 @@
 package com.ravimhzn.daggerinkotlin.baseapp
 
-import com.ravimhzn.daggerinkotlin.di.components.AppComponent
-import com.ravimhzn.daggerinkotlin.di.components.DaggerAppComponent
-import dagger.android.support.DaggerApplication
+import android.app.Activity
+import android.app.Application
 
-class BaseApplication : DaggerApplication() {
-//    override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
-//        return DaggerAppComponent.builder().application(this).build()
-//    }
-    override fun applicationInjector(): AppComponent? {
-        return DaggerAppComponent.builder().application(this)?.build()
+import dagger.android.DispatchingAndroidInjector
+import dagger.android.HasActivityInjector
+import javax.inject.Inject
+
+class BaseApplication : Application(), HasActivityInjector {
+
+    @Inject
+    lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Activity>
+
+    override fun onCreate() {
+        super.onCreate()
+        AppInjector.init(this)
     }
+
+    override fun activityInjector() = dispatchingAndroidInjector
 }

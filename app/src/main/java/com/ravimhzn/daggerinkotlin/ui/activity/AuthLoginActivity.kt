@@ -1,30 +1,38 @@
 package com.ravimhzn.daggerinkotlin.ui.activity
 
+import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.util.Log
-import android.widget.TextView
+import android.widget.ImageView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import com.bumptech.glide.RequestManager
 import com.ravimhzn.daggerinkotlin.R
+import dagger.android.AndroidInjection
+import dagger.android.AndroidInjector
+import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.DaggerAppCompatActivity
-import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
 class AuthLoginActivity : DaggerAppCompatActivity() {
 
-    var TAG = "AuthLoginActivity"
+
+
+    var TAG = "AuthLoginActivity::"
 
     @Inject
-    lateinit var homeTextInjectedFromDaggerModule: String
+    lateinit var requestManager: RequestManager
 
-    private lateinit var tvAuthLoginText: TextView
+    @Inject
+    lateinit var dLogo: Drawable
+
+    private lateinit var imgLogo: ImageView
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        initViews()
-    }
-
-    private fun initViews() {
-        tvAuthLoginText = findViewById<TextView>(R.id.tvAuthLoginTitle)
-        tvAuthLoginText.text = homeTextInjectedFromDaggerModule
+        imgLogo = findViewById<ImageView>(R.id.imgLoginLogo)
+        requestManager.load(dLogo).into(imgLogo)
     }
 }

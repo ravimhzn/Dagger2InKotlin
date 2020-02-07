@@ -1,12 +1,23 @@
 package com.ravimhzn.daggerinkotlin.dummy;
 
+import android.app.Application;
+
 import com.ravimhzn.daggerinkotlin.ui.activity.AuthLoginActivity;
 
 import dagger.Module;
 import dagger.Provides;
 import dagger.android.ContributesAndroidInjector;
 
+@Module
 public class DummyPractices {
+
+    @Provides
+    static String getAppInstance(Application application) {
+        if (application != null) {
+            return "Modafucker";
+        }
+        return "Test";
+    }
 }
 
 
@@ -16,7 +27,7 @@ abstract class ActivityBuildersModule {
     abstract AuthLoginActivity contributeAuthLoginActivity();
 
     @Provides
-    static String someString(){
+    static String someString() {
         return "This is a test";
     }
 }
