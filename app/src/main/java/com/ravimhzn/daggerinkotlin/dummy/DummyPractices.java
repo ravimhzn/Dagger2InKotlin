@@ -2,7 +2,7 @@ package com.ravimhzn.daggerinkotlin.dummy;
 
 import android.app.Application;
 
-import com.ravimhzn.daggerinkotlin.ui.activity.AuthLoginActivity;
+import com.ravimhzn.daggerinkotlin.ui.auth.AuthLoginActivity;
 
 import dagger.Module;
 import dagger.Provides;

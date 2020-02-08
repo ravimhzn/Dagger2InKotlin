@@ -1,8 +1,7 @@
-package com.ravimhzn.daggerinkotlin.di.module
+package com.ravimhzn.daggerinkotlin.di.app_level.module
 
 import android.app.Application
 import android.graphics.drawable.Drawable
-import androidx.annotation.Nullable
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
