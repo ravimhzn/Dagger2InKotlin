@@ -17,7 +17,7 @@ class AuthLoginActivity : DaggerAppCompatActivity() {
     @Inject
     lateinit var providerFactory: ViewModelProvider.Factory
 
-    lateinit var authLoginActivityViewModel: AuthLoginActivityViewModel
+    lateinit var authLoginActivityViewModel: AuthLoginViewModel
 
     @Inject
     lateinit var requestManager: RequestManager
@@ -34,7 +34,7 @@ class AuthLoginActivity : DaggerAppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         authLoginActivityViewModel =
-            ViewModelProvider(this, providerFactory).get(AuthLoginActivityViewModel::class.java)
+            ViewModelProvider(this, providerFactory).get(AuthLoginViewModel::class.java)
 
 
         initiateViewModel()
