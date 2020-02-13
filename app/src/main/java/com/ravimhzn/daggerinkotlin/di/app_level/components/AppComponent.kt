@@ -1,6 +1,7 @@
 package com.ravimhzn.daggerinkotlin.di.app_level.components
 
 import android.app.Application
+import com.ravimhzn.daggerinkotlin.SessionManager
 import com.ravimhzn.daggerinkotlin.baseapp.BaseApplication
 import com.ravimhzn.daggerinkotlin.di.app_level.module.ActivityBuildersModule
 import com.ravimhzn.daggerinkotlin.di.app_level.module.AppModule
@@ -9,6 +10,7 @@ import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjectionModule
 import javax.inject.Singleton
+
 
 @Singleton
 @Component(
@@ -20,6 +22,11 @@ import javax.inject.Singleton
     ]
 )
 interface AppComponent {
+
+    /**
+     * Session manager can be access any where in the application
+     */
+    fun sessionManager() : SessionManager
 
     @Component.Builder
     interface Builder {

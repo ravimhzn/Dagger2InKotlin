@@ -1,79 +1,52 @@
 package com.ravimhzn.daggerinkotlin.ui.auth
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.LiveDataReactiveStreams
-import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
+import com.ravimhzn.daggerinkotlin.SessionManager
 import com.ravimhzn.daggerinkotlin.models.User
 import com.ravimhzn.daggerinkotlin.network.AuthLoginAPI
+import io.reactivex.functions.Function
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-class AuthLoginViewModel @Inject constructor(authLoginAPI: AuthLoginAPI) : ViewModel() {
 
-    private val TAG: String = "AuthLoginViewModel::"
-    private lateinit var authLoginAPI: AuthLoginAPI
+class AuthLoginViewModel @Inject constructor(
+    private val authLoginAPI: AuthLoginAPI,
+    private val sessionManager: SessionManager
+) : ViewModel() {
 
-    private var authUser = MediatorLiveData<User>()
+    private val TAG: String = AuthLoginViewModel::class.java.name
 
-    init {
-        this.authLoginAPI = authLoginAPI
+    fun authenticateWithUserId(userId: Int) {
+        Log.d(TAG, "****ATTEMPTING TO LOGIN***")
+        sessionManager.authenticateWithUserIdFromSessionManager(queryUserId(userId))
     }
 
-    /**
-     * Get User Information from Server using RxJava and
-     * Use ViewModel - LiveData to communicate with UI
-     */
-    fun authenticateWithMediatorLiveDataId(userId: Int) {
-        var source = LiveDataReactiveStreams.fromPublisher(
-            authLoginAPI.getUser(userId)
-                .subscribeOn(Schedulers.io())
-        )
-
-        //Converting the source to MediatorLiveData
-        authUser.addSource(source) {
-            authUser.value = it
-            authUser.removeSource(source)
-        }
+    fun observeAuthUser(): LiveData<AuthResource<User>> {
+        return sessionManager.observeUser()
     }
 
-    fun observeUser(): LiveData<User> {
-        return authUser
-    }
-
-
-//    fun testHttpConnectionWithRetrofit() {
-//        authLoginAPI.getUser(5)
-//            .toObservable()
-//            .subscribeOn(Schedulers.io())
-//            .subscribe(object : Observer<User> {
-//                override fun onComplete() {
-//
-//                }
-//
-//                override fun onSubscribe(d: Disposable) {
-//
-//                }
-//
-//                override fun onNext(t: User) {
-//                    Log.d(TAG, "EMAIL :: ${t.email}")
-//                }
-//
-//                override fun onError(e: Throwable) {
-//                    Log.d(TAG, "ERROR OCCURRED :: $e")
-//                }
-//            })
-//    }
-
-
-    /**
-     * Workaround without the use of MediatorLiveData
-     */
-    fun authenticateWithId(userId: Int): LiveData<User> {
+    fun queryUserId(userID: Int): LiveData<AuthResource<User>> {
         return LiveDataReactiveStreams.fromPublisher(
-            authLoginAPI.getUser(userId).subscribeOn(
-                Schedulers.io()
-            )
+            authLoginAPI.getUser(userID)
+                .onErrorReturn {
+                    val user = User()
+                    user.id = -1
+                    user
+                }
+                .map(object : Function<User, AuthResource<User>> {
+                    override fun apply(user: User): AuthResource<User> {
+                        if (user.id == -1) {
+                            //While using enums be sure to call it through the class. AuthResource.Error
+                            return AuthResource.Error("Could not authenticated", null)
+                        }
+                        return AuthResource.Success(user)
+                    }
+
+                })
+                .subscribeOn(Schedulers.io())
         )
     }
 }

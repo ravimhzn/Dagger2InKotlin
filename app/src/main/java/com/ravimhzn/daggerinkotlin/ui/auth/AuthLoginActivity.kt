@@ -7,6 +7,8 @@ import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.ProgressBar
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.RequestManager
@@ -36,6 +38,8 @@ class AuthLoginActivity : DaggerAppCompatActivity(), View.OnClickListener {
 
     private lateinit var etUserId: TextInputEditText
 
+    private lateinit var progressBar: ProgressBar
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
@@ -51,16 +55,51 @@ class AuthLoginActivity : DaggerAppCompatActivity(), View.OnClickListener {
         imgLogo = findViewById<ImageView>(R.id.imgLoginLogo)
         requestManager.load(dLogo).into(imgLogo)
         findViewById<Button>(R.id.btn_login).setOnClickListener(this)
+        progressBar = findViewById(R.id.progress_bar)
+    }
+
+    private fun attemptLogin() {
+        if (TextUtils.isEmpty(etUserId.text.toString())) {
+            etUserId.error = "User Id cannot be empty"
+            return
+        }
+        viewModel.authenticateWithUserId(Integer.parseInt(etUserId.text.toString()))
     }
 
     private fun subscribeToObservers() {
-        viewModel.observeUser().observe(this, object : Observer<User> {
-            override fun onChanged(t: User?) {
-                t?.let {
-                    Log.d(TAG, "EMAIL:::: ${t.email}")
+        viewModel.observeAuthUser().observe(this,
+            Observer<AuthResource<User>> {
+                when (it) {
+                    is AuthResource.Success -> {
+                        showProgressBar(false)
+                        Log.d(TAG, "LOGIN SUCCESS:: ${it.data?.email}")
+                        Toast.makeText(
+                            this,
+                            "LOGIN SUCCESS:: ${it.data?.email}",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    is AuthResource.Loading -> {
+                        showProgressBar(true)
+                    }
+                    is AuthResource.Error -> {
+                        showProgressBar(false)
+                        Log.d(TAG, "ERROR OCCURED")
+                        Toast.makeText(this, "Error occured", Toast.LENGTH_SHORT).show()
+                    }
+                    is AuthResource.Logout -> {
+
+                    }
                 }
-            }
-        })
+            })
+    }
+
+    private fun showProgressBar(isVisible: Boolean) {
+        progressBar.visibility = if (isVisible) {
+            View.VISIBLE
+        } else {
+            View.GONE
+        }
     }
 
     private fun initiateViewModel() {
@@ -76,24 +115,5 @@ class AuthLoginActivity : DaggerAppCompatActivity(), View.OnClickListener {
         }
     }
 
-    private fun attemptLogin() {
-        if (TextUtils.isEmpty(etUserId.text.toString())) {
-            etUserId.error = "User Id cannot be empty"
-            return
-        }
 
-        viewModel.authenticateWithMediatorLiveDataId(Integer.parseInt(etUserId.text.toString()))
-
-        //withoutUsingMediatorLiveData()
-    }
-
-    private fun withoutUsingMediatorLiveData() {
-        viewModel.authenticateWithId(Integer.parseInt(etUserId.text.toString()))
-            .observe(this, object : Observer<User> {
-                override fun onChanged(t: User?) {
-                    Log.d(TAG, "EMAIL::: (WITHOUT MLV) ${t?.email}")
-                }
-
-            })
-    }
 }
