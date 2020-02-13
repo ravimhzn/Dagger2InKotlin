@@ -25,7 +25,7 @@ class AuthLoginViewModel @Inject constructor(
     }
 
     fun observeAuthUser(): LiveData<AuthResource<User>> {
-        return sessionManager.observeUser()
+        return sessionManager.getAuthUser()
     }
 
     fun queryUserId(userID: Int): LiveData<AuthResource<User>> {

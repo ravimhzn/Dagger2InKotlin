@@ -23,7 +23,7 @@ class SessionManager @Inject constructor() {
         }
     }
 
-    fun observeUser(): LiveData<AuthResource<User>> {
+    fun getAuthUser(): LiveData<AuthResource<User>> {
         return cachedUser
     }
 
