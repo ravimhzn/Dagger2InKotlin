@@ -8,6 +8,7 @@ import com.ravimhzn.daggerinkotlin.ui.auth.AuthResource
 import javax.inject.Inject
 import javax.inject.Singleton
 
+
 @Singleton
 class SessionManager @Inject constructor() {
 

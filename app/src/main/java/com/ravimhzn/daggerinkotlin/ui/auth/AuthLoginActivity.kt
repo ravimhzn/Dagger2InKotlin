@@ -76,11 +76,6 @@ class AuthLoginActivity : DaggerAppCompatActivity(), View.OnClickListener {
                     is AuthResource.Success -> {
                         showProgressBar(false)
                         Log.d(TAG, "LOGIN SUCCESS:: ${it.data?.email}")
-                        Toast.makeText(
-                            this,
-                            "LOGIN SUCCESS:: ${it.data?.email}",
-                            Toast.LENGTH_SHORT
-                        ).show()
                         onLoginSuccess()
                     }
                     is AuthResource.Loading -> {
@@ -92,7 +87,7 @@ class AuthLoginActivity : DaggerAppCompatActivity(), View.OnClickListener {
                         Toast.makeText(this, "Error occured", Toast.LENGTH_SHORT).show()
                     }
                     is AuthResource.Logout -> {
-
+                        //Log.d(TAG, "##### LOGOUT TEST FROM LOADING #####");
                     }
                 }
             })

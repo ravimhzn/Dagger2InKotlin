@@ -2,6 +2,7 @@ package com.ravimhzn.daggerinkotlin.di.app_level.module
 
 import com.ravimhzn.daggerinkotlin.di.auth.AuthLoginViewModelModule
 import com.ravimhzn.daggerinkotlin.di.auth.AuthModule
+import com.ravimhzn.daggerinkotlin.di.main.MainFragmentBuildersModule
 import com.ravimhzn.daggerinkotlin.ui.auth.AuthLoginActivity
 import com.ravimhzn.daggerinkotlin.ui.main.MainActivity
 import dagger.Module
@@ -16,6 +17,6 @@ abstract class ActivityBuildersModule {
     )
     abstract fun contributeAuthActivity(): AuthLoginActivity
 
-    @ContributesAndroidInjector
+    @ContributesAndroidInjector(modules = [MainFragmentBuildersModule::class])
     abstract fun contributeMainActivity(): MainActivity
 }

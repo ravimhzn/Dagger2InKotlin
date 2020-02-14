@@ -4,8 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.Observer
+import com.ravimhzn.daggerinkotlin.models.User
 import com.ravimhzn.daggerinkotlin.ui.auth.AuthLoginActivity
 import com.ravimhzn.daggerinkotlin.ui.auth.AuthResource
 import dagger.android.support.DaggerAppCompatActivity
@@ -15,7 +15,6 @@ import javax.inject.Inject
 open class BaseActivity : DaggerAppCompatActivity() {
 
     private var TAG = BaseActivity::class.java.name
-
     /**
      * Handles the user session in our app
      */
@@ -28,29 +27,26 @@ open class BaseActivity : DaggerAppCompatActivity() {
     }
 
     //Subscribe to the observer SessionManager.
-    // That way it will catch for any changes made on SessionManager Class
+    // That way it will be listening for any changes made on SessionManager Class
     private fun subscribeObservers() {
-        sessionManager.getAuthUser().observe(this, Observer {
-            when (it) {
-                is AuthResource.Success -> {
-                    Toast.makeText(
-                        this,
-                        "LOGIN SUCCESS:: ${it.data?.email}",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-                is AuthResource.Loading -> {
+        sessionManager.getAuthUser().observe(this,
+            Observer<AuthResource<User>> {
+                when (it) {
+                    is AuthResource.Success -> {
 
+                    }
+                    is AuthResource.Loading -> {
+
+                    }
+                    is AuthResource.Error -> {
+
+                    }
+                    is AuthResource.Logout -> {
+                        Log.d(TAG, "##### LOGOUT TEST SUCCESSFUL #####");
+                        navLoginScreen()
+                    }
                 }
-                is AuthResource.Error -> {
-                    Log.d(TAG, "ERROR OCCURED")
-                    Toast.makeText(this, "Error occured", Toast.LENGTH_SHORT).show()
-                }
-                is AuthResource.Logout -> {
-                    navLoginScreen()
-                }
-            }
-        })
+            })
     }
 
     private fun navLoginScreen() {
