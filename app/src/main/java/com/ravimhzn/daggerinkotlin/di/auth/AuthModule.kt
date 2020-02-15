@@ -1,6 +1,6 @@
 package com.ravimhzn.daggerinkotlin.di.auth
 
-import com.ravimhzn.daggerinkotlin.network.AuthLoginAPI
+import com.ravimhzn.daggerinkotlin.network.auth.AuthLoginAPI
 import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit

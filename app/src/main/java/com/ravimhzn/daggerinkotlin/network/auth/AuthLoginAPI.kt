@@ -1,4 +1,4 @@
-package com.ravimhzn.daggerinkotlin.network
+package com.ravimhzn.daggerinkotlin.network.auth
 
 import com.ravimhzn.daggerinkotlin.models.User
 import io.reactivex.Flowable

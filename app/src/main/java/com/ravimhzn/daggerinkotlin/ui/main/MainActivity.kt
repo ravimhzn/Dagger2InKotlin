@@ -6,6 +6,7 @@ import android.view.Menu
 import android.view.MenuItem
 import com.ravimhzn.daggerinkotlin.BaseActivity
 import com.ravimhzn.daggerinkotlin.R
+import com.ravimhzn.daggerinkotlin.ui.main.post.PostFragment
 
 class MainActivity : BaseActivity() {
 
@@ -20,7 +21,10 @@ class MainActivity : BaseActivity() {
 
     private fun testFragment() {
         supportFragmentManager.beginTransaction()
-            .replace(R.id.main_container, ProfileFragment())
+            .replace(
+                R.id.main_container,
+                PostFragment()
+            )
             .commit()
     }
 
