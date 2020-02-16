@@ -3,10 +3,13 @@ package com.ravimhzn.daggerinkotlin.ui.auth
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.LiveDataReactiveStreams
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
+import com.bumptech.glide.load.engine.Resource
 import com.ravimhzn.daggerinkotlin.SessionManager
+import com.ravimhzn.daggerinkotlin.models.Posts
 import com.ravimhzn.daggerinkotlin.models.User
-import com.ravimhzn.daggerinkotlin.network.AuthLoginAPI
+import com.ravimhzn.daggerinkotlin.network.auth.AuthLoginAPI
 import io.reactivex.functions.Function
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
@@ -18,6 +21,7 @@ class AuthLoginViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val TAG: String = AuthLoginViewModel::class.java.name
+
 
     fun authenticateWithUserId(userId: Int) {
         Log.d(TAG, "****ATTEMPTING TO LOGIN***")
@@ -32,9 +36,11 @@ class AuthLoginViewModel @Inject constructor(
         return LiveDataReactiveStreams.fromPublisher(
             authLoginAPI.getUser(userID)
                 .onErrorReturn {
+                    Log.d(TAG, "Error $it")
                     val user = User()
                     user.id = -1
                     user
+
                 }
                 .map(object : Function<User, AuthResource<User>> {
                     override fun apply(user: User): AuthResource<User> {

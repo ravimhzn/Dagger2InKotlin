@@ -1,17 +1,49 @@
 package com.ravimhzn.daggerinkotlin.ui.main
 
 import android.os.Bundle
-import android.os.PersistableBundle
+import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import com.ravimhzn.daggerinkotlin.BaseActivity
 import com.ravimhzn.daggerinkotlin.R
+import com.ravimhzn.daggerinkotlin.ui.main.post.PostFragment
 
 class MainActivity : BaseActivity() {
 
-    private var TAG = MainActivity::class.java.name
+    val TAG = MainActivity::class.java.name
 
-    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-        super.onCreate(savedInstanceState, persistentState)
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        testFragment()
     }
 
+    private fun testFragment() {
+        supportFragmentManager.beginTransaction()
+            .replace(
+                R.id.main_container,
+                PostFragment()
+            )
+            .commit()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.main_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.logout -> {
+                Log.d(TAG, "Logout clicked")
+                sessionManager.logout()
+                true
+            }
+            else -> {
+                super.onOptionsItemSelected(item)
+            }
+        }
+    }
 }
