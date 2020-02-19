@@ -9,7 +9,7 @@ This opensource project is a demonstration of how we can login a user and displa
 * Kotlin Version 1.3.40
 
 ## Compatibility
-This demo is expected with in between minSdkVersion 17 to targetSdkVersion 29.
+This demo is expected to run in between minSdkVersion 17 to targetSdkVersion 29.
 
 ## Libraries Used:
 * Dagger 2.2+ (Focus on Dagger-Android)
@@ -25,6 +25,7 @@ MVVM stands for Model,View,ViewModel in which controllers, views and animations 
 ## Dagger2 in Kotlin:
 Dagger2 configuration in Kotlin is a bit tricky and it's difficult to configure it when viewmodel is involved. We have to create a seperate ViewModelProviderFactory class inorder to inject into ViewModel as VM doesn't suport constructor injection by default.
 
+```
 class ViewModelProviderFactory
 @Inject
 constructor(
@@ -44,9 +45,11 @@ constructor(
 
     }
 }
+```
 
 After creating a ViewModelProviderFactory class we have to define it in out AppComponent class on Application level so that we could inject it on our ViewModels.
 
+```
 @Singleton
 @Component(
     modules = [
@@ -57,6 +60,7 @@ After creating a ViewModelProviderFactory class we have to define it in out AppC
     ]
 )
 interface AppComponent {
+
     /**
      * Session manager can be access any where in the application
      */
@@ -73,7 +77,7 @@ interface AppComponent {
 
     fun inject(app: BaseApplication)
 }
-
+```
 
 
 
