@@ -47,7 +47,19 @@ constructor(
 }
 ```
 
-After creating a ViewModelProviderFactory class we have to define it in out AppComponent class on Application level so that we could inject it on our ViewModels.
+After creating a ViewModelProviderFactory class, we have to define it inside ViewModelFactoryModule class.
+
+```
+@Module
+abstract class ViewModelFactoryModule {
+
+    @Binds
+    abstract fun bindViewModelFactory(factory: ViewModelProviderFactory): ViewModelProvider.Factory
+
+}
+```
+
+ViewModelFactoryModule have to define it in AppComponent class on Application level so that we could be injected it on our ViewModels.
 
 ```
 @Singleton
