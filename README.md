@@ -90,6 +90,12 @@ interface AppComponent {
     fun inject(app: BaseApplication)
 }
 ```
+ ## TODO:
+ - Flexible Design for multiple screen sizes.
+ - Improve UI for good user interface, Keep the interface simple.
+ - Cover edge case in Unit test
+ - UI Test with Espresso and Mockk
+ - JUnit5 Test
 
 
 
