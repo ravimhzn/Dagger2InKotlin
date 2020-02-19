@@ -90,6 +90,9 @@ interface AppComponent {
     fun inject(app: BaseApplication)
 }
 ```
+## RxJava and LiveData
+This project uses RxJava to define an observable and handle asynchronous network operation with Retrofit2 and also uses it to handle the user session then turn all our observables into Flowable constructs to use it in our ViewModel.
+
  ## TODO:
  - Flexible Design for multiple screen sizes.
  - Improve UI for good user interface, Keep the interface simple.
