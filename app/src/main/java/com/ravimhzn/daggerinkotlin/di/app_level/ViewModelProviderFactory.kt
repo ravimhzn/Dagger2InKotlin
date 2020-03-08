@@ -1,4 +1,4 @@
-package com.ravimhzn.daggerinkotlin.viewmodels
+package com.ravimhzn.daggerinkotlin.di.app_level
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -8,7 +8,7 @@ import javax.inject.Provider
 class ViewModelProviderFactory
 @Inject
 constructor(
-    private val creators: Map<Class<out ViewModel>, @JvmSuppressWildcards Provider<ViewModel>>
+        private val creators: Map<Class<out ViewModel>, @JvmSuppressWildcards Provider<ViewModel>>
 ) : ViewModelProvider.Factory{
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -21,6 +21,5 @@ constructor(
         } catch (e: Exception) {
             throw RuntimeException(e)
         }
-
     }
 }

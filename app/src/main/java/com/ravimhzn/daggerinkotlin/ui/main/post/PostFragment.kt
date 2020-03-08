@@ -29,6 +29,7 @@ class PostFragment : DaggerFragment() {
 
     private lateinit var recyclerView: RecyclerView
 
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

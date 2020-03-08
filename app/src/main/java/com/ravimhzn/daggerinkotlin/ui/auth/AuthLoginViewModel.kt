@@ -22,7 +22,6 @@ class AuthLoginViewModel @Inject constructor(
 
     private val TAG: String = AuthLoginViewModel::class.java.name
 
-
     fun authenticateWithUserId(userId: Int) {
         Log.d(TAG, "****ATTEMPTING TO LOGIN***")
         sessionManager.authenticateWithUserIdFromSessionManager(queryUserId(userId))

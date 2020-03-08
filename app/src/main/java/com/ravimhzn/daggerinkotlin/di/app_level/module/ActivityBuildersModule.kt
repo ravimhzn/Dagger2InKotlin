@@ -20,8 +20,11 @@ abstract class ActivityBuildersModule {
     abstract fun contributeAuthActivity(): AuthLoginActivity
 
     @ContributesAndroidInjector(
-        modules = [MainFragmentBuildersModule::class,
-            MainViewModelModule::class, MainModule::class]
+        modules = [
+            MainFragmentBuildersModule::class,
+            MainViewModelModule::class,
+            MainModule::class
+        ]
     )
     abstract fun contributeMainActivity(): MainActivity
 }
