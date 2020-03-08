@@ -1,4 +1,4 @@
-package com.ravimhzn.daggerinkotlin.viewmodels
+package com.ravimhzn.daggerinkotlin.di.app_level
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -21,6 +21,5 @@ constructor(
         } catch (e: Exception) {
             throw RuntimeException(e)
         }
-
     }
 }
